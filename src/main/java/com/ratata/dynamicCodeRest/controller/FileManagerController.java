@@ -334,17 +334,16 @@ public class FileManagerController {
     List<File> fileList = new ArrayList<File>();
     LinkedList<File> folderList = new LinkedList<File>();
     scanFolder(file, fileList, folderList);
-    zipFiles(fileList, response, path);
+    zipFiles(fileList, response);
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
-  private static void zipFiles(List<File> fileList, HttpServletResponse response, String path)
-      throws Exception {
+  private static void zipFiles(List<File> fileList, HttpServletResponse response) throws Exception {
     response.setHeader("Content-Disposition", "attachment; filename=\"" + "download.zip" + "\"");
     response.setHeader("Content-Type", "application/zip");
     ZipOutputStream zos = new ZipOutputStream(response.getOutputStream());
     for (File file : fileList) {
-      ZipEntry ze = new ZipEntry(file.getAbsolutePath().substring(path.length() + 1));
+      ZipEntry ze = new ZipEntry(file.getAbsolutePath());
       zos.putNextEntry(ze);
       zos.write(IOUtils.toByteArray(new FileInputStream(file)));
     }
