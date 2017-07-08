@@ -23,8 +23,8 @@ import com.ratata.dynamicCodeRest.utils.ErrorUtil;
 @RestController
 public class SocketRestEndpointController {
 
-	private static Map<String, Socket> sessionList = new ConcurrentHashMap<String, Socket>();
-	private static Map<String, String> configList = new ConcurrentHashMap<String, String>();
+	private static final Map<String, Socket> sessionList = new ConcurrentHashMap<String, Socket>();
+	private static final Map<String, String> configList = new ConcurrentHashMap<String, String>();
 
 	@RequestMapping(value = "/socketHandler", method = RequestMethod.POST)
 	public static Object socketHandler(@RequestBody byte[] data, @RequestHeader(required = true) String sockRestId) {

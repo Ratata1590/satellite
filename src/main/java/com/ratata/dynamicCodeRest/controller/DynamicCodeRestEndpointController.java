@@ -40,13 +40,13 @@ public class DynamicCodeRestEndpointController {
 		shareResourceFromSpring.loadAllSharedObj();
 	}
 
-	public static Map<String, String> sourceCodeList = new ConcurrentHashMap<String, String>();
+	public static final Map<String, String> sourceCodeList = new ConcurrentHashMap<String, String>();
 
-	public static Map<String, Class<?>> classList = new ConcurrentHashMap<String, Class<?>>();
+	public static final Map<String, Class<?>> classList = new ConcurrentHashMap<String, Class<?>>();
 
-	public static Map<String, DynamicObject> objList = new ConcurrentHashMap<String, DynamicObject>();
+	public static final Map<String, DynamicObject> objList = new ConcurrentHashMap<String, DynamicObject>();
 
-	public static Map<String, FutureResult> futureResult = new ConcurrentHashMap<String, FutureResult>();
+	public static final Map<String, FutureResult> futureResult = new ConcurrentHashMap<String, FutureResult>();
 
 	public static final Map<String, JsonNode> configList = new HashMap<String, JsonNode>();
 
