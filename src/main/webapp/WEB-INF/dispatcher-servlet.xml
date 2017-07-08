@@ -23,12 +23,5 @@ http://www.springframework.org/schema/task http://www.springframework.org/schema
 	<task:scheduler id="myScheduler" pool-size="10" />
 	
 	
-	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
-		<property name="cacheManager" ref="ehcache" />
-	</bean>
-	<bean id="ehcache"
-		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
-		<property name="configLocation" value="classpath:config/ehcache.xml" />
-		<property name="shared" value="true" />
-	</bean>
+
 </beans>
