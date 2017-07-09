@@ -37,7 +37,7 @@ public class ResourceController {
 	private static ObjectMapper mapper = new ObjectMapper();
 
 	@RequestMapping(value = "/dynamicFrontEnd/**", method = RequestMethod.POST)
-	public static void postResource(HttpServletRequest request, @RequestBody byte[] body) throws Exception {
+	public static void postResource(HttpServletRequest request, @RequestBody byte[] body){
 		String key = getResourcePathFromRequest(request);
 		resources.put(key, body);
 		resourcesList.put(key, String.valueOf(body.length));

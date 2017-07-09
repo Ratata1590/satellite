@@ -57,14 +57,14 @@ public class BotPoolEndpointController {
 	}
 
 	@RequestMapping(value = "/botGetConnection", method = RequestMethod.POST)
-	public static String botGetConnection(@RequestHeader String botName) throws Exception {
+	public static String botGetConnection(@RequestHeader String botName) {
 		String botNode = botConnectionPool.get(botName).poll();
 		String respNode = MirrorForceEndpointController.mirrorControlCreate();
 		return botNode + ":" + respNode;
 	}
 
 	@RequestMapping(value = "/botPoll", method = RequestMethod.POST)
-	public static String botPoll(@RequestHeader String botName) throws Exception {
+	public static String botPoll(@RequestHeader String botName) {
 		return botConnectionPool.get(botName).poll();
 	}
 }

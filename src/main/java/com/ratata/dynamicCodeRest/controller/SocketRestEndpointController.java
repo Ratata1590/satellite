@@ -5,7 +5,6 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
-import java.net.SocketTimeoutException;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
@@ -75,20 +74,24 @@ public class SocketRestEndpointController {
 	}
 
 	@RequestMapping(value = "/socketControl/connect", method = RequestMethod.POST)
-	public static String socketControlConnect(@RequestHeader String host, @RequestHeader Integer port)
-			throws Exception {
+	public static Object socketControlConnect(@RequestHeader String host, @RequestHeader Integer port) {
 		String tmpsessionId = getSaltString();
 		while (sessionList.containsKey(tmpsessionId)) {
 			tmpsessionId = getSaltString();
 		}
-		Socket sock = openSocket(host, port);
+		Socket sock;
+		try {
+			sock = openSocket(host, port);
+		} catch (Exception e) {
+			return new ResponseEntity<>(ErrorUtil.printStackTrace(e), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		sessionList.put(tmpsessionId, sock);
 		configList.put(tmpsessionId, host + ":" + port);
 		return tmpsessionId;
 	}
 
 	@RequestMapping(value = "/socketControl/disconnect", method = RequestMethod.POST)
-	public static void socketControlDisconnect(@RequestHeader String sessionId) throws Exception {
+	public static void socketControlDisconnect(@RequestHeader String sessionId) {
 		try {
 			sessionList.get(sessionId).close();
 		} catch (Exception e) {
@@ -116,17 +119,13 @@ public class SocketRestEndpointController {
 
 	private static Socket openSocket(String server, int port) throws Exception {
 		Socket socket;
-		try {
-			InetAddress inteAddress = InetAddress.getByName(server);
-			SocketAddress socketAddress = new InetSocketAddress(inteAddress, port);
-			socket = new Socket();
-			int timeoutInMs = 10 * 1000;
-			socket.connect(socketAddress, timeoutInMs);
-			return socket;
-		} catch (SocketTimeoutException ste) {
-			ste.printStackTrace();
-			throw ste;
-		}
+		InetAddress inteAddress = InetAddress.getByName(server);
+		SocketAddress socketAddress = new InetSocketAddress(inteAddress, port);
+		socket = new Socket();
+		int timeoutInMs = 10 * 1000;
+		socket.connect(socketAddress, timeoutInMs);
+		return socket;
+
 	}
 
 	public static String getSaltString() {
